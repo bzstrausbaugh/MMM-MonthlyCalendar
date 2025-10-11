@@ -12,22 +12,42 @@ function el(tag, options) {
 }
 
 function addOneDay(d) {
-  return moment(d).add(1, 'days');
+  return new Date(
+    d.getFullYear(),
+    d.getMonth(),
+    d.getDate() + 1,
+    d.getHours(),
+    d.getMinutes(),
+    d.getSeconds(),
+    d.getMilliseconds()
+  );
 }
-
 function diffDays(a, b) {
-  return moment(a).diff(moment(b), 'days');
+  a = new Date(a);
+  b = new Date(b);
+
+  a.setHours(0, 0, 0, 0);
+  b.setHours(0, 0, 0, 0);
+
+  return Math.round((a.getTime() - b.getTime()) / (24 * 60 * 60 * 1000)) + 1;
 }
 
+// Adapted from https://stackoverflow.com/a/6117889/245795
 function getWeekNumber(d) {
-  return moment(d).week();
+  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - d.getUTCDay());
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
 }
 
 function formatEventTime(d) {
+  var h = d.getHours();
+  var m = d.getMinutes().toString().padStart(2, '0');
   if (config.timeFormat === 12) {
-    return moment(d).format('hh:mm');
+    return (h % 12 || 12) + (m > 0 ? `:${m}` : '') + (h < 12 ? 'am' : 'pm');
+  } else {
+    return `${h}:${m}`;
   }
-  return moment(d).format('HH:mm');
 }
 
 function equals(a, b) {
