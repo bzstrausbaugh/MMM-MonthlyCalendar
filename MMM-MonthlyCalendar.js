@@ -79,6 +79,27 @@ function getLuminance(color) {
   }
 }
 
+function getToday() {
+  return new Date().setHours(12, 0, 0, 0).valueOf();
+}
+
+function setDetailContent(events, selectedDate) {
+  let d = selectedDate;
+  if (!d) {
+    d = getToday();
+  }
+  const e = events ? events : [];
+  const eventsForDay = e.filter((event) =>
+    moment(d).isBetween(
+      moment(e.startDate).startOf('day'),
+      moment(e.endDate).endOf('day')
+    )
+  );
+  document.getElementById('monthly-event-detail-date').innerHTML =
+    moment(d).format('MMM Do, YYYY');
+  const infoElement = document.getElementById('monthly-event-detail-info');
+}
+
 Module.register('MMM-MonthlyCalendar', {
   // Default module config
   defaults: {
@@ -102,6 +123,7 @@ Module.register('MMM-MonthlyCalendar', {
     self.displayedEvents = [];
     self.updateTimer = null;
     self.skippedUpdateCount = 0;
+    self.selectedDate = getToday();
   },
 
   notificationReceived: function (notification, payload, sender) {
@@ -153,7 +175,7 @@ Module.register('MMM-MonthlyCalendar', {
       }
 
       self.updateTimer = setTimeout(() => {
-        const today = new Date().setHours(12, 0, 0, 0).valueOf();
+        const today = getToday();
 
         // Step 3: Combine and sort events
         self.events = Object.values(self.sourceEvents)
@@ -289,14 +311,24 @@ Module.register('MMM-MonthlyCalendar', {
         })
       );
     }
-    row.appendChild(
-      el('td', {
-        className: 'details',
-        rowspan: 6,
-        id: 'monthly_event_detail',
-        innerHTML: 'Test',
+    const detailCell = el('td', {
+      className: 'details',
+      rowspan: 6,
+      id: 'monthly-event-detail-cell',
+    });
+    detailCell.appendChild(
+      el('div', {
+        id: 'date',
+        id: 'monthly-event-detail-date',
       })
     );
+    detailCell.appendChild(
+      el('div', {
+        className: 'events',
+        id: 'monthly-event-detail-info',
+      })
+    );
+    row.appendChild(detailCell);
     table.appendChild(row);
 
     for (var week = 0; week < 6 && cellIndex <= monthDays; ++week) {
@@ -333,8 +365,8 @@ Module.register('MMM-MonthlyCalendar', {
         cell.appendChild(el('div', { innerHTML: cellDay }));
         cell.addEventListener('click', () => {
           console.log('clicked on', moment(cellDate).format('MMM Do, YYYY'));
-          document.getElementById('monthly_event_detail').innerHTML =
-            moment(cellDate).format('MMM Do, YYYY');
+          self.selectedDate = cellDate;
+          setDetailContent(self.events, self.selectedDate);
         });
         row.appendChild(cell);
         dateCells[cellIndex] = cell;
