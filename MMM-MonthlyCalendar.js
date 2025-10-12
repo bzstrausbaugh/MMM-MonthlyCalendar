@@ -113,6 +113,9 @@ Module.register('MMM-MonthlyCalendar', {
         return;
       }
 
+      console.log('SENDER', sender);
+      console.log('GOT EVENTS', payload);
+
       // Step 1: Parse and filter incoming events
       self.sourceEvents[sender.identifier] = payload
         .map((e) => {
@@ -286,6 +289,14 @@ Module.register('MMM-MonthlyCalendar', {
         })
       );
     }
+    row.appendChild(
+      el('td', {
+        className: 'details',
+        rowspan: 6,
+        id: 'detail',
+        innerHTML: 'Test',
+      })
+    );
     table.appendChild(row);
 
     for (var week = 0; week < 6 && cellIndex <= monthDays; ++week) {

@@ -1,6 +1,10 @@
 .MMM-MonthlyCalendar .wrapper {
-  width: 75%;
+  width: 100%;
   table-layout: fixed;
+}
+
+.MMM-MonthlyCalendar .detail {
+  width: 25%;
 }
 
 .MMM-MonthlyCalendar .header {
