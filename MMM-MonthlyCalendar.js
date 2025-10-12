@@ -351,7 +351,7 @@ Module.register('MMM-MonthlyCalendar', {
         var cellDate = new Date(now.getFullYear(), now.getMonth(), cellIndex);
         var cellDay = cellDate.getDate();
 
-        cell = el('td', { className: 'cell', 'data-date': cellDate });
+        cell = el('td', { className: 'cell' });
         if (['lastmonth', 'nextmonth'].includes(mode)) {
           // Do nothing
         } else if (cellIndex === today) {
@@ -361,6 +361,7 @@ Module.register('MMM-MonthlyCalendar', {
         } else if (cellIndex < today) {
           cell.classList.add('past-date');
         }
+        cell.dataSet.date = cellDate;
 
         if ((week === 0 && day === 0) || cellDay === 1) {
           cellDay = cellDate.toLocaleString(config.language, {
@@ -370,10 +371,12 @@ Module.register('MMM-MonthlyCalendar', {
         }
 
         cell.appendChild(el('div', { innerHTML: cellDay }));
-        cell.addEventListener('click', () => {
+        cell.addEventListener('click', (evt) => {
           console.log(
             'clicked on',
-            moment(this.dataset.date).format('MMM Do, YYYY')
+            e,
+            evt
+            //  moment(this.dataset.date).format('MMM Do, YYYY')
           );
           self.selectedDate = this.dataset.date;
           setDetailContent(self.events, self.selectedDate);
