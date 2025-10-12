@@ -374,9 +374,8 @@ Module.register('MMM-MonthlyCalendar', {
         cell.addEventListener('click', (evt) => {
           console.log(
             'clicked on',
-            e,
-            evt
-            //  moment(this.dataset.date).format('MMM Do, YYYY')
+            this,
+            moment(this.dataset.date).format('MMM Do, YYYY')
           );
           self.selectedDate = this.dataset.date;
           setDetailContent(self.events, self.selectedDate);
