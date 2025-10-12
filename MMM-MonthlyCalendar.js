@@ -98,6 +98,13 @@ function setDetailContent(events, selectedDate) {
   document.getElementById('monthly-event-detail-date').innerHTML =
     moment(d).format('MMM Do, YYYY');
   const infoElement = document.getElementById('monthly-event-detail-info');
+  eventsForDay.forEach((evt) => {
+    infoElement.appendChild(el('div', { innerHTML: e.title }));
+    infoElement.appendChild(
+      el,
+      ('div', { className: time, innerHTML: e.startDate })
+    );
+  });
 }
 
 Module.register('MMM-MonthlyCalendar', {
@@ -318,7 +325,7 @@ Module.register('MMM-MonthlyCalendar', {
     });
     detailCell.appendChild(
       el('div', {
-        id: 'date',
+        className: 'date',
         id: 'monthly-event-detail-date',
       })
     );
