@@ -361,7 +361,7 @@ Module.register('MMM-MonthlyCalendar', {
         } else if (cellIndex < today) {
           cell.classList.add('past-date');
         }
-        cell.dataset.date = cellDate;
+        cell.dataset.date = cellDate.getTime();
 
         if ((week === 0 && day === 0) || cellDay === 1) {
           cellDay = cellDate.toLocaleString(config.language, {
