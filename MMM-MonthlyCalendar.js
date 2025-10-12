@@ -293,7 +293,7 @@ Module.register('MMM-MonthlyCalendar', {
       el('td', {
         className: 'details',
         rowspan: 6,
-        id: 'detail',
+        id: 'monthly_event_detail',
         innerHTML: 'Test',
       })
     );
@@ -331,6 +331,10 @@ Module.register('MMM-MonthlyCalendar', {
         }
 
         cell.appendChild(el('div', { innerHTML: cellDay }));
+        cell.addEventListener('click', () => {
+          console.log('clicked on', cellDate);
+          document.getElementById('monthly_event_detail').innerHTML(cellDate);
+        });
         row.appendChild(cell);
         dateCells[cellIndex] = cell;
       }
