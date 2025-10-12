@@ -332,8 +332,9 @@ Module.register('MMM-MonthlyCalendar', {
 
         cell.appendChild(el('div', { innerHTML: cellDay }));
         cell.addEventListener('click', () => {
-          console.log('clicked on', cellDate);
-          document.getElementById('monthly_event_detail').innerHTML(cellDate);
+          console.log('clicked on', moment(cellDate).format('MMM Do, YYYY');
+          document.getElementById('monthly_event_detail').innerHTML =
+            moment(cellDate).format('MMM Do, YYYY');
         });
         row.appendChild(cell);
         dateCells[cellIndex] = cell;
