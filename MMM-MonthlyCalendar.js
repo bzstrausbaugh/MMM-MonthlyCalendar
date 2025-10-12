@@ -351,7 +351,7 @@ Module.register('MMM-MonthlyCalendar', {
         var cellDate = new Date(now.getFullYear(), now.getMonth(), cellIndex);
         var cellDay = cellDate.getDate();
 
-        cell = el('td', { className: 'cell' });
+        cell = el('td', { className: 'cell', date: cellDate });
         if (['lastmonth', 'nextmonth'].includes(mode)) {
           // Do nothing
         } else if (cellIndex === today) {
@@ -372,7 +372,7 @@ Module.register('MMM-MonthlyCalendar', {
         cell.appendChild(el('div', { innerHTML: cellDay }));
         cell.addEventListener('click', () => {
           console.log('clicked on', moment(cellDate).format('MMM Do, YYYY'));
-          self.selectedDate = cellDate;
+          self.selectedDate = this.date;
           setDetailContent(self.events, self.selectedDate);
         });
         row.appendChild(cell);
