@@ -1,5 +1,3 @@
-// MMM-MonthlyCalendar.js
-
 function el(tag, options) {
   var result = document.createElement(tag);
 
@@ -89,22 +87,33 @@ function setDetailContent(events, selectedDate) {
     d = getToday();
   }
   const e = events ? events : [];
-  const eventsForDay = e.filter((event) =>
-    moment(d).isBetween(
-      moment(e.startDate).startOf('day'),
-      moment(e.endDate).endOf('day')
-    )
-  );
-  document.getElementById('monthly-event-detail-date').innerHTML =
-    moment(d).format('MMM Do, YYYY');
-  const infoElement = document.getElementById('monthly-event-detail-info');
-  eventsForDay.forEach((evt) => {
-    infoElement.appendChild(el('div', { innerHTML: e.title }));
-    infoElement.appendChild(
-      el,
-      ('div', { className: time, innerHTML: e.startDate })
-    );
+  const day = dayjs(d);
+  const eventsForDay = e.filter((event, idx) => {
+    const start = dayjs(event.startDate).startOf('day');
+    const end = dayjs(event.endDate).endOf('day');
+    return day.isBetween(start, end, day, '[]');
   });
+  document.getElementById('monthly-event-detail-date').innerHTML =
+    day.format('MMM DD, YYYY');
+  const infoElement = document.getElementById('monthly-event-detail-info');
+  infoElement.innerHTML = '';
+  if (eventsForDay.length === 0) {
+    infoElement.appendChild(el('div', { innerHTML: 'Nothing scheduled' }));
+  } else {
+    eventsForDay.forEach((evt) => {
+      infoElement.appendChild(el('div', { innerHTML: evt.title }));
+      infoElement.appendChild(
+        el('div', {
+          className: 'time',
+          innerHTML: evt.fullDayEvent
+            ? `00:00 - 23:59`
+            : `${dayjs(evt.startDate).format('HH:mm')} - ${dayjs(
+                evt.endDate
+              ).format('HH:mm')}`,
+        })
+      );
+    });
+  }
 }
 
 Module.register('MMM-MonthlyCalendar', {
@@ -131,6 +140,10 @@ Module.register('MMM-MonthlyCalendar', {
     self.updateTimer = null;
     self.skippedUpdateCount = 0;
     self.selectedDate = getToday();
+  },
+
+  getScripts: function () {
+    return ['dayjs.js'];
   },
 
   notificationReceived: function (notification, payload, sender) {
@@ -221,10 +234,6 @@ Module.register('MMM-MonthlyCalendar', {
         }
       }, 5000);
     }
-  },
-
-  getScripts: function () {
-    return ['moment.js'];
   },
 
   getStyles: function () {
@@ -320,7 +329,7 @@ Module.register('MMM-MonthlyCalendar', {
     }
     const detailCell = el('td', {
       className: 'details',
-      rowspan: 6,
+      rowSpan: 6,
       id: 'monthly-event-detail-cell',
     });
     detailCell.appendChild(
@@ -339,7 +348,7 @@ Module.register('MMM-MonthlyCalendar', {
     table.appendChild(row);
 
     for (var week = 0; week < 6 && cellIndex <= monthDays; ++week) {
-      row = el('tr', { className: 'xsmall' });
+      const row = el('tr', { className: 'xsmall' });
       if (self.config.showWeekNumber) {
         const weekDate = new Date(now.getFullYear(), now.getMonth(), cellIndex);
         row.appendChild(
@@ -348,10 +357,10 @@ Module.register('MMM-MonthlyCalendar', {
       }
 
       for (day = 0; day < 7; ++day, ++cellIndex) {
-        var cellDate = new Date(now.getFullYear(), now.getMonth(), cellIndex);
+        const cellDate = new Date(now.getFullYear(), now.getMonth(), cellIndex);
         var cellDay = cellDate.getDate();
 
-        cell = el('td', { className: 'cell' });
+        const cell = el('td', { className: 'cell' });
         if (['lastmonth', 'nextmonth'].includes(mode)) {
           // Do nothing
         } else if (cellIndex === today) {
@@ -361,7 +370,6 @@ Module.register('MMM-MonthlyCalendar', {
         } else if (cellIndex < today) {
           cell.classList.add('past-date');
         }
-        cell.dataset.date = cellDate.getTime();
 
         if ((week === 0 && day === 0) || cellDay === 1) {
           cellDay = cellDate.toLocaleString(config.language, {
@@ -371,13 +379,10 @@ Module.register('MMM-MonthlyCalendar', {
         }
 
         cell.appendChild(el('div', { innerHTML: cellDay }));
-        cell.addEventListener('click', (evt) => {
-          console.log(
-            'clicked on',
-            this,
-            moment(this.dataset.date).format('MMM Do, YYYY')
-          );
-          self.selectedDate = this.dataset.date;
+        cell.addEventListener('click', () => {
+          const date = cellDate.getTime();
+          console.log('clicked on', dayjs(date).format('MMM DD, YYYY'));
+          self.selectedDate = date;
           setDetailContent(self.events, self.selectedDate);
         });
         row.appendChild(cell);
