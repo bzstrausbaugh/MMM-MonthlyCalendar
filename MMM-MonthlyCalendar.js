@@ -233,6 +233,7 @@ Module.register('MMM-MonthlyCalendar', {
           self.updateDom();
         }
       }, 5000);
+      setDetailContent(self.event);
     }
   },
 
