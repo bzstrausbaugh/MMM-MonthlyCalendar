@@ -73,9 +73,5 @@
 }
 
 .MMM-MonthlyCalendar .end {
-  border-left: 1px solid;
-}
-
-.MMM-MonthlyCalendar .selected {
-  border: 1px solid red;
+  border-right: 1px solid;
 }

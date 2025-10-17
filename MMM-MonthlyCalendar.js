@@ -376,17 +376,13 @@ Module.register('MMM-MonthlyCalendar', {
         }
 
         cell.appendChild(el('div', { innerHTML: cellDay }));
-        cell.addEventListener('click', (evt) => {
-          const date = cellDate.getTime();
-          self.selectedDate = date;
-          setDetailContent(self.events, self.selectedDate);
-          const previousSelections =
-            document.getElementsByClassName('selected');
-          previousSelections.forEach((previousSelection) =>
-            previousSelection.classList.remove('selected')
-          );
-          evt.target.classList.push('selected');
-        });
+        if (cell.classList.contains('cell')) {
+          cell.addEventListener('click', (evt) => {
+            const date = cellDate.getTime();
+            self.selectedDate = date;
+            setDetailContent(self.events, self.selectedDate);
+          });
+        }
         row.appendChild(cell);
         dateCells[cellIndex] = cell;
       }
@@ -395,14 +391,6 @@ Module.register('MMM-MonthlyCalendar', {
     }
 
     var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    var monthEnd = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      monthDays,
-      23,
-      59,
-      59
-    );
     for (var i in self.events) {
       var e = self.events[i];
 
