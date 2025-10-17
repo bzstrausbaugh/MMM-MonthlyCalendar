@@ -8,18 +8,18 @@
 }
 
 .MMM-MonthlyCalendar .details .date {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-large);
   text-decoration: underline;
 }
 
 .MMM-MonthlyCalendar .details .events {
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-medium);
   display: flex;
   flex-direction: column;
 }
 
 .MMM-MonthlyCalendar .details .events .time {
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-small);
   display: flex;
   flex-direction: column;
   filter: brightness(45%);
