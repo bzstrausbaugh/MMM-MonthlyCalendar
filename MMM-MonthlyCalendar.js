@@ -151,12 +151,8 @@ Module.register('MMM-MonthlyCalendar', {
 
     if (notification === 'CALENDAR_EVENTS') {
       if (!Array.isArray(payload)) {
-        console.error('Payload is not an array:', payload);
         return;
       }
-
-      console.log('SENDER', sender);
-      console.log('GOT EVENTS', payload);
 
       // Step 1: Parse and filter incoming events
       self.sourceEvents[sender.identifier] = payload
@@ -382,7 +378,6 @@ Module.register('MMM-MonthlyCalendar', {
         cell.appendChild(el('div', { innerHTML: cellDay }));
         cell.addEventListener('click', () => {
           const date = cellDate.getTime();
-          console.log('clicked on', dayjs(date).format('MMM DD, YYYY'));
           self.selectedDate = date;
           setDetailContent(self.events, self.selectedDate);
         });
