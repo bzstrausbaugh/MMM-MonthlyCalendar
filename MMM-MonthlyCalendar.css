@@ -8,7 +8,7 @@
 }
 
 .MMM-MonthlyCalendar .details .date {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-medium);
   text-decoration: underline;
 }
 
@@ -70,4 +70,12 @@
 
 .MMM-MonthlyCalendar .past-date {
   filter: brightness(75%);
+}
+
+.MMM-MonthlyCalendar .end {
+  border-left: 1px solid;
+}
+
+.MMM-MonthlyCalendar .selected {
+  border: 1px solid red;
 }

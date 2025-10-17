@@ -317,7 +317,7 @@ Module.register('MMM-MonthlyCalendar', {
       );
       row.appendChild(
         el('th', {
-          className: 'header',
+          className: `header${day === '6' ? ' end' : ' '}`,
           innerHTML: headerDate.toLocaleString(config.language, {
             weekday: 'long',
           }),
@@ -357,7 +357,7 @@ Module.register('MMM-MonthlyCalendar', {
         const cellDate = new Date(now.getFullYear(), now.getMonth(), cellIndex);
         var cellDay = cellDate.getDate();
 
-        const cell = el('td', { className: 'cell' });
+        const cell = el('td', { className: `cell${day === 6 ? ' end' : ''}` });
         if (['lastmonth', 'nextmonth'].includes(mode)) {
           // Do nothing
         } else if (cellIndex === today) {
@@ -376,10 +376,16 @@ Module.register('MMM-MonthlyCalendar', {
         }
 
         cell.appendChild(el('div', { innerHTML: cellDay }));
-        cell.addEventListener('click', () => {
+        cell.addEventListener('click', (evt) => {
           const date = cellDate.getTime();
           self.selectedDate = date;
           setDetailContent(self.events, self.selectedDate);
+          const previousSelections =
+            document.getElementsByClassName('selected');
+          previousSelections.forEach((previousSelection) =>
+            previousSelection.classList.remove('selected')
+          );
+          evt.target.classList.push('selected');
         });
         row.appendChild(cell);
         dateCells[cellIndex] = cell;
