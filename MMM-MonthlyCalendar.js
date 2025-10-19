@@ -189,6 +189,7 @@ Module.register('MMM-MonthlyCalendar', {
         clearTimeout(self.updateTimer);
         ++self.skippedUpdateCount;
       }
+      setDetailContent(self.event, self.selectedDate);
 
       self.updateTimer = setTimeout(() => {
         const today = getToday();
@@ -228,8 +229,8 @@ Module.register('MMM-MonthlyCalendar', {
           self.skippedUpdateCount = 0;
           self.updateDom();
         }
+        setDetailContent(self.event, self.selectedDate);
       }, 5000);
-      setDetailContent(self.event, self.selectedDate);
     }
   },
 
@@ -380,7 +381,7 @@ Module.register('MMM-MonthlyCalendar', {
           cell.addEventListener('click', (evt) => {
             const date = cellDate.getTime();
             self.selectedDate = date;
-            setDetailContent(self.events, self.selectedDate);
+            setDetailContent(self.events, date);
           });
         }
         row.appendChild(cell);
