@@ -189,7 +189,7 @@ Module.register('MMM-MonthlyCalendar', {
         clearTimeout(self.updateTimer);
         ++self.skippedUpdateCount;
       }
-      setDetailContent(self.event, self.selectedDate);
+      setDetailContent(self.events, self.selectedDate);
 
       self.updateTimer = setTimeout(() => {
         const today = getToday();
@@ -229,7 +229,7 @@ Module.register('MMM-MonthlyCalendar', {
           self.skippedUpdateCount = 0;
           self.updateDom();
         }
-        setDetailContent(self.event, self.selectedDate);
+        setDetailContent(self.events, self.selectedDate);
       }, 5000);
     }
   },
