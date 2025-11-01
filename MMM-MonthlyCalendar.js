@@ -239,7 +239,15 @@ Module.register('MMM-MonthlyCalendar', {
   },
 
   getDom: function () {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
     const weeksToMonthDays = {
       nextoneweek: 0,
       currentweek: 0,
@@ -312,7 +320,7 @@ Module.register('MMM-MonthlyCalendar', {
         el('th', {
           className: `header${day === '6' ? ' end' : ' '}`,
           innerHTML: headerDate.toLocaleString(config.language, {
-            weekday: 'long',
+            weekday: 'short',
           }),
         })
       );
