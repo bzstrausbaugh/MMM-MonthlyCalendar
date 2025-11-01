@@ -239,15 +239,7 @@ Module.register('MMM-MonthlyCalendar', {
   },
 
   getDom: function () {
-    const days = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const weeksToMonthDays = {
       nextoneweek: 0,
       currentweek: 0,
